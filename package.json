@@ -4,7 +4,9 @@
   "description": "Fake Job & Scam Detection - Unified Project Manager",
   "scripts": {
     "install-all": "npm install && cd client && npm install && cd ../server && npm install && cd ../ml-service && pip install -r requirements.txt",
+    "build-prod": "cd server && npm run build",
     "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\" \"npm run dev-ml\"",
+    "start-prod": "concurrently \"cd server && npm start\" \"cd ml-service && python app.py\"",
     "dev-server": "cd server && npm run dev",
     "dev-client": "cd client && npm run dev",
     "dev-ml": "cd ml-service && python app.py"
