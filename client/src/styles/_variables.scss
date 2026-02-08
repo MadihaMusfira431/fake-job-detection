@@ -1,0 +1,52 @@
+// Typography
+$font-display: 'Syne', sans-serif;
+$font-body: 'Space Grotesk', sans-serif;
+$font-mono: 'JetBrains Mono', monospace;
+
+// Colors
+$bg-deep: #0a0a0c;
+$bg-surface: #121217;
+$accent-primary: #00ffaa;
+$accent-secondary: #00ccff;
+$text-primary: #ffffff;
+$text-secondary: #a0a0b0;
+$danger: #ff3c50;
+
+// Layout
+$container-max-width: 1400px;
+$border-style: 2px solid #1a1a23;
+
+// Responsive Mixins
+$breakpoints: (
+    'sm': 640px,
+    'md': 768px,
+    'lg': 1024px,
+    'xl': 1280px,
+    '2xl': 1536px
+);
+
+@mixin mobile {
+    @media (max-width: map-get($breakpoints, 'md')) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (min-width: map-get($breakpoints, 'md')) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: map-get($breakpoints, 'lg')) {
+        @content;
+    }
+}
+
+// Fluid Typography Function (simplified clamp)
+@function fluid($min, $max, $min-vw: 320px, $max-vw: 1400px) {
+    $factor: 1 / ($max-vw - $min-vw) * ($max - $min);
+    $calc-value: unquote("#{ $min - ($min-vw * $factor) } + #{ $factor * 100vw }");
+
+    @return clamp($min, $calc-value, $max);
+}

@@ -1,0 +1,96 @@
+@import '../variables';
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: $border-style;
+    background: $bg-surface;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    .nav-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 0;
+    }
+}
+
+.logo {
+    font-family: $font-display;
+    font-weight: 800;
+    font-size: fluid(1.2rem, 1.8rem);
+    letter-spacing: -1px;
+    color: $accent-primary;
+    text-transform: uppercase;
+    cursor: pointer;
+    z-index: 101;
+}
+
+.desktop-menu {
+    display: none;
+    gap: 2.5rem;
+    align-items: center;
+
+    @include tablet {
+        display: flex;
+    }
+}
+
+.nav-link {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: $accent-primary;
+    }
+}
+
+.nav-btn {
+    padding: 0.6rem 1.8rem;
+    font-size: 0.85rem;
+    width: auto;
+}
+
+.mobile-toggle {
+    background: none;
+    border: none;
+    color: $text-primary;
+    cursor: pointer;
+    z-index: 101;
+
+    @include tablet {
+        display: none;
+    }
+}
+
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: $bg-deep;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    z-index: 100;
+
+    .nav-link {
+        font-size: 2rem;
+        font-family: $font-display;
+        font-weight: 700;
+    }
+
+    .btn-primary {
+        width: 80%;
+        max-width: 300px;
+    }
+}

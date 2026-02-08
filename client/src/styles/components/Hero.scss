@@ -1,0 +1,84 @@
+@import '../variables';
+
+.hero {
+    padding: fluid(4rem, 8rem) 0 fluid(3rem, 5rem);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+
+    .hero-main {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .highlight {
+        color: $accent-primary;
+    }
+
+    .hero-description {
+        font-size: fluid(1.1rem, 1.35rem);
+        color: $text-secondary;
+        max-width: 650px;
+        margin: 0 auto 3rem;
+        line-height: 1.6;
+
+        @include mobile {
+            font-size: 1rem;
+        }
+    }
+
+    .hero-btn {
+        width: fit-content;
+        margin: 0 auto;
+    }
+}
+
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: fluid(3rem, 5rem);
+    flex-wrap: wrap;
+
+    @include mobile {
+        gap: 1rem;
+    }
+}
+
+.stat-item {
+    background: $bg-surface;
+    border: $border-style;
+    padding: 1.5rem 2rem;
+    min-width: 220px;
+    flex: 1;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @include mobile {
+        min-width: 100%;
+        padding: 1.2rem;
+    }
+}
+
+.stat-icon {
+    margin-bottom: 1rem;
+    color: $accent-primary;
+}
+
+.stat-value {
+    font-size: fluid(1.5rem, 2.2rem);
+    font-weight: 700;
+    color: $accent-primary;
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: $text-secondary;
+}

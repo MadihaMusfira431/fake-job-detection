@@ -1,0 +1,51 @@
+@import '../variables';
+
+.features {
+    padding: fluid(6rem, 10rem) 0;
+    background: $bg-deep;
+    text-align: center;
+}
+
+.features-grid {
+    display: grid;
+    // Intrinsic responsive grid: auto-fit with minmax
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+
+    @include mobile {
+        gap: 1.5rem;
+    }
+}
+
+.feature-card {
+    background: $bg-surface;
+    border: $border-style;
+    padding: fluid(2.5rem, 3.5rem);
+    position: relative;
+    transition: all 0.3s ease;
+    text-align: left;
+
+    &:hover {
+        border-color: $accent-primary;
+        transform: translateY(-10px);
+    }
+
+    .feature-icon {
+        color: $accent-primary;
+        margin-bottom: 1.5rem;
+    }
+
+    h3 {
+        font-family: $font-display;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+    }
+
+    p {
+        color: $text-secondary;
+        line-height: 1.7;
+        font-size: 0.95rem;
+    }
+}
