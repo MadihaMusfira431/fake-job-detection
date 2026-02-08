@@ -1,0 +1,43 @@
+services:
+  # Node.js Backend
+  - type: web
+    name: fake-job-backend
+    env: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        sync: false # Set this in the Render dashboard
+      - key: ML_SERVICE_URL
+        fromService:
+          name: fake-job-ml
+          type: web
+          property: host
+
+  # Python ML Service
+  - type: web
+    name: fake-job-ml
+    env: python
+    rootDir: ml-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: waitress-serve --port=$PORT app:app
+    envVars:
+      - key: PORT
+        value: 5000
+
+  # React Frontend (Static Site)
+  - type: static
+    name: fake-job-frontend
+    env: static
+    rootDir: client
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: fake-job-backend
+          type: web
+          property: host
