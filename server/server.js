@@ -3,9 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const axios = require('axios');
-const Query = require('./models/Query');
-
 const path = require('path');
+const Query = require('./models/Query');
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -20,7 +19,6 @@ mongoose.connect(process.env.MONGO_URI)
     .catch(err => console.error('MongoDB connection error:', err));
 
 // API Routes
-// Health Check Route
 app.get('/api/health', (req, res) => {
     res.json({
         success: true,
@@ -37,15 +35,13 @@ app.post('/api/detect', async (req, res) => {
         if (!text) {
             return res.status(400).json({
                 success: false,
-                error: 'Text is required for analysis'
+                error: 'Text is required'
             });
         }
 
-        // Call ML Service
         const mlResponse = await axios.post(process.env.ML_SERVICE_URL, { text });
         const { label, probability, reason } = mlResponse.data;
 
-        // Save to Database
         const newQuery = new Query({
             inputText: text,
             label,
@@ -54,21 +50,16 @@ app.post('/api/detect', async (req, res) => {
         });
         await newQuery.save();
 
-        // Return response to frontend
         res.status(200).json({
             success: true,
-            data: {
-                label,
-                probability,
-                reason
-            }
+            data: { label, probability, reason }
         });
 
     } catch (error) {
-        console.error('Detection error:', error.message);
+        console.error(error.message);
         res.status(503).json({
             success: false,
-            error: 'AI Analysis service unavailable. Please check ml-service.'
+            error: 'ML service unavailable'
         });
     }
 });
@@ -76,24 +67,18 @@ app.post('/api/detect', async (req, res) => {
 app.get('/api/history', async (req, res) => {
     try {
         const queries = await Query.find().sort({ createdAt: -1 }).limit(10);
-        res.status(200).json({
-            success: true,
-            data: queries
-        });
+        res.json({ success: true, data: queries });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: 'Failed to fetch history from database'
-        });
+        res.status(500).json({ success: false, error: 'DB error' });
     }
 });
 
-// Serve Static Frontend Files
+// Serve frontend
 const clientDistPath = path.join(__dirname, '../client/dist');
 app.use(express.static(clientDistPath));
 
-// Catch-all route to serve React's index.html
-app.get('/*', (req, res) => {
+// ✅ SAFE fallback (NO wildcard)
+app.use((req, res) => {
     res.sendFile(path.join(clientDistPath, 'index.html'));
 });
 
