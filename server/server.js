@@ -73,13 +73,13 @@ app.get('/api/history', async (req, res) => {
     }
 });
 
-// Serve frontend
-const clientDistPath = path.join(__dirname, '../client/dist');
-app.use(express.static(clientDistPath));
+// Serve frontend from local public folder
+const publicPath = path.join(__dirname, 'public');
+app.use(express.static(publicPath));
 
 // ✅ SAFE fallback (NO wildcard)
 app.use((req, res) => {
-    res.sendFile(path.join(clientDistPath, 'index.html'));
+    res.sendFile(path.join(publicPath, 'index.html'));
 });
 
 app.listen(PORT, () => {
