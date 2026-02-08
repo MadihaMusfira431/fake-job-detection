@@ -12,8 +12,10 @@ const History = ({ refreshKey }) => {
     const fetchHistory = async () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/history`)
-            const data = await response.json()
-            setHistory(data)
+            const json = await response.json()
+            if (json.success) {
+                setHistory(json.data)
+            }
         } catch (err) {
             console.error('Failed to fetch history')
         }

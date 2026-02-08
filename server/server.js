@@ -18,12 +18,25 @@ mongoose.connect(process.env.MONGO_URI)
     .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
+// Health Check Root Route
+app.get('/', (req, res) => {
+    res.json({
+        success: true,
+        message: 'Fake Job Detection Backend is running 🚀',
+        status: 'Operational',
+        version: '1.0.0'
+    });
+});
+
 app.post('/api/detect', async (req, res) => {
     try {
         const { text } = req.body;
 
         if (!text) {
-            return res.status(400).json({ error: 'Text is required' });
+            return res.status(400).json({
+                success: false,
+                error: 'Text is required for analysis'
+            });
         }
 
         // Call ML Service
@@ -40,7 +53,7 @@ app.post('/api/detect', async (req, res) => {
         await newQuery.save();
 
         // Return response to frontend
-        res.json({
+        res.status(200).json({
             success: true,
             data: {
                 label,
@@ -51,9 +64,9 @@ app.post('/api/detect', async (req, res) => {
 
     } catch (error) {
         console.error('Detection error:', error.message);
-        res.status(500).json({
+        res.status(503).json({
             success: false,
-            error: 'Failed to process request. Is ML service running?'
+            error: 'AI Analysis service unavailable. Please check ml-service.'
         });
     }
 });
@@ -61,9 +74,15 @@ app.post('/api/detect', async (req, res) => {
 app.get('/api/history', async (req, res) => {
     try {
         const queries = await Query.find().sort({ createdAt: -1 }).limit(10);
-        res.json(queries);
+        res.status(200).json({
+            success: true,
+            data: queries
+        });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch history' });
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch history from database'
+        });
     }
 });
 
