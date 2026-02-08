@@ -5,6 +5,8 @@ const cors = require('cors');
 const axios = require('axios');
 const Query = require('./models/Query');
 
+const path = require('path');
+
 const app = express();
 const PORT = process.env.PORT || 5001;
 
@@ -17,12 +19,12 @@ mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error('MongoDB connection error:', err));
 
-// Routes
-// Health Check Root Route
-app.get('/', (req, res) => {
+// API Routes
+// Health Check Route
+app.get('/api/health', (req, res) => {
     res.json({
         success: true,
-        message: 'Fake Job Detection Backend is running 🚀',
+        message: 'Fake Job Detection API is running 🚀',
         status: 'Operational',
         version: '1.0.0'
     });
@@ -84,6 +86,15 @@ app.get('/api/history', async (req, res) => {
             error: 'Failed to fetch history from database'
         });
     }
+});
+
+// Serve Static Frontend Files
+const clientDistPath = path.join(__dirname, '../client/dist');
+app.use(express.static(clientDistPath));
+
+// Catch-all route to serve React's index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(clientDistPath, 'index.html'));
 });
 
 app.listen(PORT, () => {

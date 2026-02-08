@@ -1,16 +1,15 @@
 services:
-  # Node.js Backend
   - type: web
     name: fake-job-backend
     env: node
     rootDir: server
-    buildCommand: npm install
+    buildCommand: npm run build && npm install
     startCommand: node server.js
     envVars:
       - key: PORT
         value: 10000
       - key: MONGO_URI
-        sync: false # Set this in the Render dashboard
+        sync: false
       - key: ML_SERVICE_URL
         fromService:
           name: fake-job-ml
@@ -28,16 +27,3 @@ services:
       - key: PORT
         value: 5000
 
-  # React Frontend (Static Site)
-  - type: static
-    name: fake-job-frontend
-    env: static
-    rootDir: client
-    buildCommand: npm install && npm run build
-    publishDir: dist
-    envVars:
-      - key: VITE_API_URL
-        fromService:
-          name: fake-job-backend
-          type: web
-          property: host
