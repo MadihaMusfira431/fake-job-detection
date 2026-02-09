@@ -22,29 +22,67 @@ const Features = () => {
         }
     ]
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.2
+            }
+        }
+    }
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.6, ease: "easeOut" }
+        }
+    }
+
     return (
         <section className="features" id="features">
             <div className="container">
-                <span className="section-label">Detection Protocol</span>
-                <h2 className="section-title">How ScamGuard Works</h2>
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <span className="section-label">Detection Protocol</span>
+                    <h2 className="section-title">How ScamGuard Works</h2>
+                </motion.div>
 
-                <div className="features-grid">
+                <motion.div
+                    className="features-grid"
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                >
                     {featureList.map((feature, i) => (
                         <motion.div
                             key={i}
-                            whileHover={{ y: -10 }}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
+                            variants={itemVariants}
+                            whileHover={{
+                                y: -15,
+                                scale: 1.02,
+                                transition: { duration: 0.3 }
+                            }}
                             className="feature-card"
                         >
-                            <div className="feature-icon">{feature.icon}</div>
+                            <motion.div
+                                className="feature-icon"
+                                whileHover={{ rotate: 10, scale: 1.1 }}
+                            >
+                                {feature.icon}
+                            </motion.div>
                             <h3>{feature.title}</h3>
                             <p>{feature.desc}</p>
                         </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     )

@@ -21,19 +21,51 @@ const History = ({ refreshKey }) => {
         }
     }
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    }
+
+    const itemVariants = {
+        hidden: { opacity: 0, scale: 0.95, y: 10 },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            transition: { duration: 0.4 }
+        }
+    }
+
     return (
         <section className="history-section" id="history">
             <div className="container">
-                <span className="section-label">Archive Log</span>
-                <h2 className="section-title">Recent Detections</h2>
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <span className="section-label">Archive Log</span>
+                    <h2 className="section-title">Recent Detections</h2>
+                </motion.div>
 
-                <div className="history-grid">
+                <motion.div
+                    className="history-grid"
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                >
                     {history.length > 0 ? history.map((item, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true }}
+                            variants={itemVariants}
+                            whileHover={{ y: -5, scale: 1.02 }}
                             className={`history-card ${item.label.toLowerCase()}`}
                         >
                             <span className="history-date">{new Date(item.createdAt).toLocaleString()}</span>
@@ -46,7 +78,7 @@ const History = ({ refreshKey }) => {
                     )) : (
                         <p className="no-logs">No logs found in neural archive.</p>
                     )}
-                </div>
+                </motion.div>
             </div>
         </section>
     )

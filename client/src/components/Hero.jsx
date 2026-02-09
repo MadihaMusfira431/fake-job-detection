@@ -15,26 +15,52 @@ const Hero = ({ scannerId }) => {
         { label: 'Verified Queries', value: '1.2M+', icon: <Shield size={20} /> }
     ]
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.2,
+                delayChildren: 0.3
+            }
+        }
+    }
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+        }
+    }
+
     return (
         <section className="hero">
             <div className="container">
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
                     className="hero-main"
                 >
-                    <span className="section-label">Automated Fraud Neutralization</span>
-                    <h1 className="section-title">
+                    <motion.span variants={itemVariants} className="section-label">Automated Fraud Neutralization</motion.span>
+                    <motion.h1 variants={itemVariants} className="section-title">
                         Neutralize <span className="highlight">Fake Job</span> Threats.
-                    </h1>
-                    <p className="hero-description">
+                    </motion.h1>
+                    <motion.p variants={itemVariants} className="hero-description">
                         The world's first Neo-Brutalist Scam Detection module. Utilizing advanced NLP to verify
                         job listings, emails, and URLs in real-time.
-                    </p>
+                    </motion.p>
 
                     <motion.button
-                        whileHover={{ x: 10 }}
+                        variants={itemVariants}
+                        whileHover={{
+                            x: 10,
+                            scale: 1.05,
+                            transition: { duration: 0.2 }
+                        }}
+                        whileTap={{ scale: 0.95 }}
                         onClick={scrollToScanner}
                         className="btn-primary hero-btn"
                     >
@@ -42,21 +68,41 @@ const Hero = ({ scannerId }) => {
                     </motion.button>
                 </motion.div>
 
-                <div className="hero-stats">
+                <motion.div
+                    className="hero-stats"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    variants={containerVariants}
+                >
                     {stats.map((stat, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.5 + i * 0.1 }}
+                            variants={itemVariants}
+                            whileHover={{
+                                y: -5,
+                                transition: { duration: 0.2 }
+                            }}
                             className="stat-item"
                         >
-                            <div className="stat-icon">{stat.icon}</div>
+                            <motion.div
+                                className="stat-icon"
+                                animate={{
+                                    y: [0, -5, 0],
+                                }}
+                                transition={{
+                                    duration: 3,
+                                    repeat: Infinity,
+                                    delay: i * 0.5
+                                }}
+                            >
+                                {stat.icon}
+                            </motion.div>
                             <span className="stat-value">{stat.value}</span>
                             <span className="stat-label">{stat.label}</span>
                         </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     )

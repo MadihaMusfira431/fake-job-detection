@@ -98,13 +98,21 @@ const Scanner = ({ onScanComplete }) => {
                     <AnimatePresence mode="wait">
                         {loading && (
                             <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
+                                key="terminal"
+                                initial={{ opacity: 0, scale: 0.98 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.98 }}
                                 className="terminal-loader"
                             >
                                 {logs.map((log, i) => (
-                                    <span key={i} className="terminal-line">{log}</span>
+                                    <motion.span
+                                        key={i}
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        className="terminal-line"
+                                    >
+                                        {log}
+                                    </motion.span>
                                 ))}
                                 <span className="terminal-cursor" />
                             </motion.div>
@@ -113,11 +121,17 @@ const Scanner = ({ onScanComplete }) => {
                         {result && !loading && (
                             <motion.div
                                 key="result"
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
+                                initial={{ opacity: 0, scale: 0.9, rotateX: -20 }}
+                                animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+                                transition={{ type: "spring", damping: 12, stiffness: 100 }}
                                 className="results-overlay"
                             >
-                                <div className="result-header">
+                                <motion.div
+                                    className="result-header"
+                                    initial={{ y: 20, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{ delay: 0.2 }}
+                                >
                                     <div className="header-left">
                                         <span className={`status-badge ${result.label.toLowerCase()}`}>
                                             {result.label === 'Ham' ? 'Verified: Legitimate' : 'Warning: Fraudulent'}
@@ -130,29 +144,36 @@ const Scanner = ({ onScanComplete }) => {
                                             {(result.probability * 100).toFixed(0)}%
                                         </div>
                                     </div>
-                                </div>
+                                </motion.div>
 
                                 <div className="score-meter">
                                     <motion.div
                                         className="score-fill"
                                         initial={{ width: 0 }}
                                         animate={{ width: `${result.probability * 100}%` }}
-                                        transition={{ duration: 1.5 }}
+                                        transition={{ duration: 1.5, ease: "circOut" }}
                                         style={{ background: result.label === 'Spam' ? '#ff3c50' : '#00ffaa' }}
                                     />
                                 </div>
 
-                                <div className="analysis-details">
+                                <motion.div
+                                    className="analysis-details"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.8 }}
+                                >
                                     <h3>Analysis Explanation</h3>
                                     <p className="analysis-text">{result.reason}</p>
-                                </div>
+                                </motion.div>
                             </motion.div>
                         )}
 
                         {error && !loading && (
                             <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
+                                key="error"
+                                initial={{ opacity: 0, x: [-10, 10, -10, 10, 0] }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.4 }}
                                 className="error-card"
                             >
                                 <AlertTriangle /> {error}

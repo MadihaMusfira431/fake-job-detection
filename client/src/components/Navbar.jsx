@@ -5,6 +5,15 @@ import '../styles/components/Navbar.scss'
 
 const Navbar = ({ scannerId }) => {
     const [isOpen, setIsOpen] = useState(false)
+    const [scrolled, setScrolled] = useState(false)
+
+    React.useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20)
+        }
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
 
     const scrollToElement = (id) => {
         const el = document.getElementById(id)
@@ -20,24 +29,36 @@ const Navbar = ({ scannerId }) => {
     ]
 
     return (
-        <nav className="navbar">
+        <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
             <div className="container nav-content">
-                <div className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                <motion.div
+                    className="logo"
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                >
                     ScamGuard_AI
-                </div>
+                </motion.div>
 
                 {/* Desktop Menu */}
                 <div className="desktop-menu">
-                    {navLinks.map((link) => (
-                        <span
+                    {navLinks.map((link, i) => (
+                        <motion.span
                             key={link.id}
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.1 }}
                             onClick={() => scrollToElement(link.id)}
                             className="nav-link"
+                            whileHover={{ y: -2 }}
                         >
                             {link.label}
-                        </span>
+                        </motion.span>
                     ))}
                     <motion.button
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.3 }}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => scrollToElement(scannerId)}
@@ -56,27 +77,33 @@ const Navbar = ({ scannerId }) => {
                 <AnimatePresence>
                     {isOpen && (
                         <motion.div
-                            initial={{ x: '100%' }}
-                            animate={{ x: 0 }}
-                            exit={{ x: '100%' }}
+                            initial={{ x: '100%', opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: '100%', opacity: 0 }}
                             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
                             className="mobile-menu"
                         >
-                            {navLinks.map((link) => (
-                                <span
+                            {navLinks.map((link, i) => (
+                                <motion.span
                                     key={link.id}
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.1 + i * 0.1 }}
                                     onClick={() => scrollToElement(link.id)}
                                     className="nav-link"
                                 >
                                     {link.label}
-                                </span>
+                                </motion.span>
                             ))}
-                            <button
+                            <motion.button
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 }}
                                 onClick={() => scrollToElement(scannerId)}
                                 className="btn-primary"
                             >
                                 Launch Scanner
-                            </button>
+                            </motion.button>
                         </motion.div>
                     )}
                 </AnimatePresence>
