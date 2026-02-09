@@ -27,17 +27,18 @@ const Features = () => {
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.2
+                staggerChildren: 0.15,
+                delayChildren: 0.2
             }
         }
     }
 
     const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
+        hidden: { opacity: 0, y: 50 },
         visible: {
             opacity: 1,
             y: 0,
-            transition: { duration: 0.6, ease: "easeOut" }
+            transition: { duration: 1, ease: [0.16, 1, 0.3, 1] }
         }
     }
 
@@ -45,10 +46,10 @@ const Features = () => {
         <section className="features" id="features">
             <div className="container">
                 <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
+                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                 >
                     <span className="section-label">Detection Protocol</span>
                     <h2 className="section-title">How ScamGuard Works</h2>
@@ -59,22 +60,18 @@ const Features = () => {
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, margin: "-100px" }}
+                    viewport={{ once: true, margin: "-20%" }}
                 >
                     {featureList.map((feature, i) => (
                         <motion.div
                             key={i}
                             variants={itemVariants}
-                            whileHover={{
-                                y: -15,
-                                scale: 1.02,
-                                transition: { duration: 0.3 }
-                            }}
                             className="feature-card"
                         >
                             <motion.div
                                 className="feature-icon"
-                                whileHover={{ rotate: 10, scale: 1.1 }}
+                                whileHover={{ scale: 1.1, rotate: 5 }}
+                                transition={{ type: 'spring', stiffness: 300, damping: 15 }}
                             >
                                 {feature.icon}
                             </motion.div>

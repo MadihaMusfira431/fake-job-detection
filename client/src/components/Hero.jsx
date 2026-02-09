@@ -6,7 +6,7 @@ import '../styles/components/Hero.scss'
 const Hero = ({ scannerId }) => {
     const scrollToScanner = () => {
         const el = document.getElementById(scannerId)
-        if (el) el.scrollIntoView({ behavior: 'smooth' })
+        if (el) el.scrollIntoView() // Lenis handles the smoothness
     }
 
     const stats = [
@@ -20,9 +20,17 @@ const Hero = ({ scannerId }) => {
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.2,
-                delayChildren: 0.3
+                staggerChildren: 0.1,
+                delayChildren: 0.4
             }
+        }
+    }
+
+    const titleVariants = {
+        hidden: { y: '100%' },
+        visible: {
+            y: 0,
+            transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
         }
     }
 
@@ -44,28 +52,41 @@ const Hero = ({ scannerId }) => {
                     animate="visible"
                     className="hero-main"
                 >
-                    <motion.span variants={itemVariants} className="section-label">Automated Fraud Neutralization</motion.span>
-                    <motion.h1 variants={itemVariants} className="section-title">
-                        Neutralize <span className="highlight">Fake Job</span> Threats.
+                    <div className="overflow-hidden">
+                        <motion.span variants={titleVariants} className="section-label">
+                            Automated Fraud Neutralization
+                        </motion.span>
+                    </div>
+
+                    <motion.h1 className="section-title">
+                        {['Neutralize', 'Fake Job', 'Threats.'].map((word, i) => (
+                            <div key={i} className="overflow-hidden">
+                                <motion.span
+                                    variants={titleVariants}
+                                    style={{ display: 'inline-block' }}
+                                    className={word === 'Fake Job' ? 'highlight' : ''}
+                                >
+                                    {word}{' '}
+                                </motion.span>
+                            </div>
+                        ))}
                     </motion.h1>
+
                     <motion.p variants={itemVariants} className="hero-description">
                         The world's first Neo-Brutalist Scam Detection module. Utilizing advanced NLP to verify
                         job listings, emails, and URLs in real-time.
                     </motion.p>
 
-                    <motion.button
-                        variants={itemVariants}
-                        whileHover={{
-                            x: 10,
-                            scale: 1.05,
-                            transition: { duration: 0.2 }
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={scrollToScanner}
-                        className="btn-primary hero-btn"
-                    >
-                        Access Terminal <ArrowRight />
-                    </motion.button>
+                    <motion.div variants={itemVariants}>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={scrollToScanner}
+                            className="btn-primary hero-btn"
+                        >
+                            Access Terminal <ArrowRight />
+                        </motion.button>
+                    </motion.div>
                 </motion.div>
 
                 <motion.div
@@ -79,10 +100,6 @@ const Hero = ({ scannerId }) => {
                         <motion.div
                             key={i}
                             variants={itemVariants}
-                            whileHover={{
-                                y: -5,
-                                transition: { duration: 0.2 }
-                            }}
                             className="stat-item"
                         >
                             <motion.div

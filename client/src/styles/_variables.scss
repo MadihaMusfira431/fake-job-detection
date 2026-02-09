@@ -4,17 +4,24 @@ $font-body: 'Space Grotesk', sans-serif;
 $font-mono: 'JetBrains Mono', monospace;
 
 // Colors
-$bg-deep: #0a0a0c;
-$bg-surface: #121217;
+$bg-deep: #08080a;
+$bg-surface: #0e0e12;
 $accent-primary: #00ffaa;
 $accent-secondary: #00ccff;
-$text-primary: #ffffff;
-$text-secondary: #a0a0b0;
+$text-primary: #fafaf9;
+$text-secondary: rgba(250, 250, 249, 0.6);
+$text-tertiary: rgba(250, 250, 249, 0.4);
 $danger: #ff3c50;
+$border-color: rgba(250, 250, 249, 0.08);
+
+// Easings (Agency Standards)
+$ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+$ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+$ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
 
 // Layout
-$container-max-width: 1400px;
-$border-style: 2px solid #1a1a23;
+$container-max-width: 1600px;
+$border-style: 1px solid $border-color;
 
 // Responsive Mixins
 $breakpoints: (
@@ -22,7 +29,8 @@ $breakpoints: (
     'md': 768px,
     'lg': 1024px,
     'xl': 1280px,
-    '2xl': 1536px
+    '2xl': 1536px,
+    'massive': 1920px
 );
 
 @mixin mobile {
@@ -43,8 +51,8 @@ $breakpoints: (
     }
 }
 
-// Fluid Typography Function (simplified clamp)
-@function fluid($min, $max, $min-vw: 320px, $max-vw: 1400px) {
+// Fluid Typography Function (Scale contrast focus)
+@function fluid($min, $max, $min-vw: 320px, $max-vw: 1600px) {
     $factor: 1 / ($max-vw - $min-vw) * ($max - $min);
     $calc-value: unquote("#{ $min - ($min-vw * $factor) } + #{ $factor * 100vw }");
 

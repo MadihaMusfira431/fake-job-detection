@@ -7,8 +7,16 @@
     overflow: hidden;
 
     .hero-main {
-        max-width: 900px;
+        max-width: 1000px;
         margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .overflow-hidden {
+        overflow: hidden;
+        width: 100%;
     }
 
     .highlight {
@@ -46,19 +54,24 @@
 }
 
 .stat-item {
-    background: $bg-surface;
+    background: transparent;
     border: $border-style;
-    padding: 1.5rem 2rem;
-    min-width: 220px;
+    padding: 2.5rem 2rem;
+    min-width: 280px;
     flex: 1;
-    max-width: 300px;
+    max-width: 350px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: border-color 0.4s $ease-out-expo;
+
+    &:hover {
+        border-color: $accent-primary;
+    }
 
     @include mobile {
         min-width: 100%;
-        padding: 1.2rem;
+        padding: 1.5rem;
     }
 }
 

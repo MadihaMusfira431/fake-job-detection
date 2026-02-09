@@ -67,9 +67,10 @@ const Scanner = ({ onScanComplete }) => {
             <div className="container">
                 <motion.div
                     className="scanner-card"
-                    initial={{ opacity: 0, y: 50 }}
+                    initial={{ opacity: 0, y: 100 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                    viewport={{ once: true, margin: "-10%" }}
                 >
                     <div className="scanner-title">
                         <Terminal size={24} className="accent-icon" />
