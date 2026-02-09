@@ -1,39 +1,58 @@
-# Fake Job Detection System
+# ScamGuard AI 🛡️
+> A High-Performance Fake Job & Scam Detection Module
 
-This project is a college group project designed to detect Fake Job Scams, Phishing Emails, and Malicious URLs using Machine Learning and NLP.
+![React](https://img.shields.io/badge/Frontend-React-blue?style=for-the-badge&logo=react)
+![Node.js](https://img.shields.io/badge/Backend-Node.js-green?style=for-the-badge&logo=node.js)
+![Python](https://img.shields.io/badge/Intelligence-Python-yellow?style=for-the-badge&logo=python)
+![MongoDB](https://img.shields.io/badge/Storage-MongoDB-darkgreen?style=for-the-badge&logo=mongodb)
 
-## Architecture
-- **Frontend**: React (Vite)
-- **Backend**: Node.js & Express.js
-- **ML Service**: Python (Flask)
-- **Database**: MongoDB
+## 📖 Introduction
+ScamGuard AI is a full-stack solution built to protect job seekers from sophisticated phishing and fraudulent listings. It uses a MERN stack core with a Python-based NLP engine to analyze text patterns in real-time.
 
-## Project Structure
-- `client/`: React frontend
-- `server/`: Node.js + Express backend
-- `ml-service/`: Python ML microservice
+---
 
-## Getting Started
+## 🛠️ Quick Start
 
-### 1. ML Service
+### Prerequisites
+- Node.js (v20+)
+- Python (3.9+)
+- MongoDB Atlas Account
+
+### Local Development
+To start the entire environment with live-reloading:
 ```bash
-cd ml-service
-python -m venv venv
-source venv/bin/activate # or venv\Scripts\activate
-pip install -r requirements.txt
-python app.py
-```
-
-### 2. Backend Server
-```bash
-cd server
 npm install
 npm run dev
 ```
 
-### 3. Frontend Client
+### Production Testing
+To simulate the Render deployment locally:
 ```bash
-cd client
-npm install
-npm run dev
+npm run build-prod
+npm run start-prod
 ```
+> **Note**: Ensure ports 5000 and 5001 are free before starting.
+
+---
+
+## 📂 Project Structure
+- `client/` - React frontend (Vite + SCSS)
+- `server/` - Node.js Express Backend
+- `ml-service/` - Python NLP microservice
+- `EXPLANATION.md` - **[READ THIS]** Detailed architecture breakdown.
+
+---
+
+## 🚀 Deployment
+This project is pre-configured for **Render Blueprints**. 
+1. Link your GitHub repo to Render.
+2. It will automatically detect `render.yaml`.
+3. Set your `MONGO_URI` in the Render dashboard.
+
+---
+
+## 🎓 Contributors
+- **College Project Team**
+
+## 📄 License
+MIT License
