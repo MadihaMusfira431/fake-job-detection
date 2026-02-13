@@ -206,3 +206,51 @@ textarea {
     align-items: center;
     gap: 1rem;
 }
+/* ===============================
+   URL Detector (Added Feature)
+   =============================== */
+.url-input {
+    margin-top: 1.5rem;
+    width: 100%;
+    padding: 1rem;
+    background: #1a1a23;
+    border: $border-style;
+    color: #fff;
+    font-family: $font-mono;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+        border-color: $accent-primary;
+    }
+}
+
+.btn-secondary {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, #4f46e5, #22d3ee);
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.url-result {
+    margin-top: 0.75rem;
+    font-weight: 600;
+    font-family: $font-mono;
+}
+
+.url-result.safe {
+    color: $accent-primary;
+}
+
+.url-result.danger {
+    color: $danger;
+}
+.url-result.warning {
+    color: #facc15; // yellow
+}
