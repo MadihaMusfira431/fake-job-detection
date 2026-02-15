@@ -89,8 +89,64 @@
         font-weight: 700;
     }
 
+    .user-info-mobile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+
+        .username {
+            font-size: 1.2rem;
+            color: $accent-primary;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    }
+
     .btn-primary {
         width: 80%;
         max-width: 300px;
     }
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.05);
+
+    .username {
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: $text-primary;
+    }
+
+    .btn-logout {
+        background: none;
+        border: none;
+        color: #888;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        transition: color 0.3s;
+
+        &:hover {
+            color: #ff4d4d;
+        }
+    }
+}
+
+.login-link {
+    color: $accent-primary;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-weight: 600;
 }

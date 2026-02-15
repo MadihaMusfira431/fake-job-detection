@@ -7,10 +7,14 @@ import Scanner from './components/Scanner'
 import History from './components/History'
 import Footer from './components/Footer'
 import CustomCursor from './components/CustomCursor'
+import AuthModal from './components/AuthModal'
 import './styles/components/CustomCursor.scss'
 
 function App() {
   const [historyKey, setHistoryKey] = useState(0)
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null)
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
+  const [guestTimerExpired, setGuestTimerExpired] = useState(false)
   const scannerId = 'scanner-tool'
 
   useEffect(() => {
@@ -23,21 +27,48 @@ function App() {
 
     requestAnimationFrame(raf)
 
+    // Guest Timer: 5 minutes = 300,000 ms
+    let timer;
+    if (!user) {
+      timer = setTimeout(() => {
+        setGuestTimerExpired(true)
+        setIsAuthModalOpen(true)
+      }, 300000);
+    }
+
     return () => {
       lenis.destroy()
+      if (timer) clearTimeout(timer)
     }
-  }, [])
+  }, [user])
 
   const refreshHistory = () => {
     setHistoryKey(prev => prev + 1)
   }
 
+  const handleAuthSuccess = (userData) => {
+    setUser(userData)
+    setGuestTimerExpired(false)
+    setIsAuthModalOpen(false)
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    setUser(null)
+  }
+
   return (
     <div className="app-container">
       <CustomCursor />
-      <Navbar scannerId={scannerId} />
+      <Navbar
+        scannerId={scannerId}
+        user={user}
+        onLogout={handleLogout}
+        onLoginClick={() => setIsAuthModalOpen(true)}
+      />
 
-      <main>
+      <main className={guestTimerExpired && !user ? 'content-locked' : ''}>
         <Hero scannerId={scannerId} />
 
         <div className="marquee">
@@ -53,6 +84,22 @@ function App() {
       </main>
 
       <Footer />
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => !guestTimerExpired && setIsAuthModalOpen(false)}
+        onAuthSuccess={handleAuthSuccess}
+      />
+
+      {guestTimerExpired && !user && (
+        <div className="guest-expired-overlay">
+          <div className="expired-content">
+            <h2>Session Expired</h2>
+            <p>Your 5-minute guest access has ended. Please login or register to continue using the Fake Job Detector.</p>
+            <button onClick={() => setIsAuthModalOpen(true)}>Login / Register</button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
