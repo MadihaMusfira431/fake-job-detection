@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, User, LogOut } from 'lucide-react'
 import '../styles/components/Navbar.scss'
 
-const Navbar = ({ scannerId }) => {
+const Navbar = ({ scannerId, user, onLogout, onLoginClick }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
 
@@ -55,10 +55,32 @@ const Navbar = ({ scannerId }) => {
                             {link.label}
                         </motion.span>
                     ))}
+
+                    {user ? (
+                        <div className="user-info">
+                            <span className="username">
+                                <User size={18} /> {user.username}
+                            </span>
+                            <button className="btn-logout" onClick={onLogout}>
+                                <LogOut size={18} />
+                            </button>
+                        </div>
+                    ) : (
+                        <motion.button
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                            onClick={onLoginClick}
+                            className="nav-link login-link"
+                        >
+                            Access Login
+                        </motion.button>
+                    )}
+
                     <motion.button
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.3 }}
+                        transition={{ delay: 0.4 }}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => scrollToElement(scannerId)}
@@ -95,10 +117,26 @@ const Navbar = ({ scannerId }) => {
                                     {link.label}
                                 </motion.span>
                             ))}
+
+                            {user ? (
+                                <div className="user-info-mobile">
+                                    <span className="username">
+                                        <User size={18} /> {user.username}
+                                    </span>
+                                    <span className="nav-link" onClick={onLogout}>
+                                        Logout
+                                    </span>
+                                </div>
+                            ) : (
+                                <span className="nav-link" onClick={onLoginClick}>
+                                    Login
+                                </span>
+                            )}
+
                             <motion.button
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3 }}
+                                transition={{ delay: 0.4 }}
                                 onClick={() => scrollToElement(scannerId)}
                                 className="btn-primary"
                             >
