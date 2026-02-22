@@ -20,7 +20,7 @@ exports.detectJob = async (req, res) => {
 
         const newQuery = new Query({
             inputText: text,
-            label,
+            label:'sucess',
             probability,
             reason
         });
