@@ -1,0 +1,38 @@
+@import '../variables';
+
+.game-link-section {
+  padding: 6rem 0 3rem;
+
+  .game-link-card {
+    border: 1px solid rgba($accent-primary, 0.35);
+    background: linear-gradient(145deg, rgba(8, 15, 18, 0.9), rgba(12, 24, 30, 0.85));
+    padding: 3rem;
+    max-width: 900px;
+
+    p {
+      max-width: 640px;
+      color: rgba(255, 255, 255, 0.78);
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    .btn-primary {
+      width: fit-content;
+      text-decoration: none;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .game-link-section {
+    padding: 4rem 0 2rem;
+
+    .game-link-card {
+      padding: 2rem 1.5rem;
+
+      p {
+        font-size: 1rem;
+      }
+    }
+  }
+}
