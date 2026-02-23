@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "description": "Fake Job & Scam Detection - Unified Project Manager",
   "scripts": {
-    "install-all": "npm install && cd client && npm install && cd ../server && npm install && cd ../ml-service && pip install -r requirements.txt",
-    "build-prod": "cd server && npm run build",
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install",
+    "build": "node build-script.js",
     "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\" \"npm run dev-ml\"",
-    "start-prod": "concurrently \"cd server && npm start\" \"cd ml-service && python app.py\"",
+    "start": "concurrently \"npm run start-server\" \"npm run start-ml\"",
     "dev-server": "cd server && npm run dev",
     "dev-client": "cd client && npm run dev",
-    "dev-ml": "cd ml-service && python app.py"
+    "dev-ml": "cd ml-service && python app.py",
+    "start-server": "cd server && npm start",
+    "start-ml": "cd ml-service && python app.py"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

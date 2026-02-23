@@ -37,39 +37,39 @@ const Scanner = ({ onScanComplete }) => {
             return () => clearInterval(interval)
         }
     }, [loading])
-const handleUrlCheck = () => {
-    if (!url.trim()) return
+    const handleUrlCheck = () => {
+        if (!url.trim()) return
 
-    // Basic URL validation
-    const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/
-    if (!urlPattern.test(url)) {
-        setUrlResult({
-            status: 'warning',
-            message: 'Invalid URL format'
-        })
-        return
+        // Basic URL validation
+        const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/
+        if (!urlPattern.test(url)) {
+            setUrlResult({
+                status: 'warning',
+                message: 'Invalid URL format'
+            })
+            return
+        }
+
+        let riskScore = 0
+
+        // IP-based URL
+        if (/https?:\/\/\d+\.\d+\.\d+\.\d+/.test(url)) riskScore++
+
+        // URL shorteners
+        if (/(bit\.ly|tinyurl|t\.co|goo\.gl)/i.test(url)) riskScore++
+
+        // Phishing keywords
+        if (/(login|verify|bank|free|winner|claim)/i.test(url)) riskScore++
+
+        // Too many special characters
+        if ((url.match(/[@\-_%]/g) || []).length > 3) riskScore++
+
+        setUrlResult(
+            riskScore >= 2
+                ? { status: 'danger', message: 'Suspicious URL Detected' }
+                : { status: 'safe', message: 'URL Appears Safe' }
+        )
     }
-
-    let riskScore = 0
-
-    // IP-based URL
-    if (/https?:\/\/\d+\.\d+\.\d+\.\d+/.test(url)) riskScore++
-
-    // URL shorteners
-    if (/(bit\.ly|tinyurl|t\.co|goo\.gl)/i.test(url)) riskScore++
-
-    // Phishing keywords
-    if (/(login|verify|bank|free|winner|claim)/i.test(url)) riskScore++
-
-    // Too many special characters
-    if ((url.match(/[@\-_%]/g) || []).length > 3) riskScore++
-
-    setUrlResult(
-        riskScore >= 2
-            ? { status: 'danger', message: 'Suspicious URL Detected' }
-            : { status: 'safe', message: 'URL Appears Safe' }
-    )
-}
 
     const handleDetect = async () => {
         if (!inputText.trim()) return
@@ -112,41 +112,41 @@ const handleUrlCheck = () => {
                         Neural Analysis Portal
                     </div>
 
-                  <div className="input-container">
-    <textarea
-        placeholder="Paste content for system verification..."
-        value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
-        disabled={loading}
-    />
+                    <div className="input-container">
+                        <textarea
+                            placeholder="Paste content for system verification..."
+                            value={inputText}
+                            onChange={(e) => setInputText(e.target.value)}
+                            disabled={loading}
+                        />
 
-    {/* URL Detector Input */}
-    <input
-        type="text"
-        className="url-input"
-        placeholder="Optional: Paste job posting URL..."
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-        disabled={loading}
-    />
+                        {/* URL Detector Input */}
+                        <input
+                            type="text"
+                            className="url-input"
+                            placeholder="Optional: Paste job posting URL..."
+                            value={url}
+                            onChange={(e) => setUrl(e.target.value)}
+                            disabled={loading}
+                        />
 
-    <motion.button
-        type="button"
-        className="btn-secondary"
-        onClick={handleUrlCheck}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.97 }}
-        disabled={!url.trim()}
-    >
-        Scan URL
-    </motion.button>
+                        <motion.button
+                            type="button"
+                            className="btn-secondary"
+                            onClick={handleUrlCheck}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.97 }}
+                            disabled={!url.trim()}
+                        >
+                            Scan URL
+                        </motion.button>
 
-    {urlResult && (
-        <p className={`url-result ${urlResult.status}`}>
-            {urlResult.message}
-        </p>
-    )}
-</div>
+                        {urlResult && (
+                            <p className={`url-result ${urlResult.status}`}>
+                                {urlResult.message}
+                            </p>
+                        )}
+                    </div>
 
                     <motion.button
                         onClick={handleDetect}
@@ -197,7 +197,7 @@ const handleUrlCheck = () => {
                                 >
                                     <div className="header-left">
                                         <span className={`status-badge ${result.label.toLowerCase()}`}>
-                                            {result.label === 'Ham' ? 'Verified: Legitimate' : 'Warning: Fraudulent'}
+                                            {result.label === 'Safe' ? 'Verified: Legitimate' : 'Warning: Fraudulent'}
                                         </span>
                                         <h2 className="result-label">Result: {result.label}</h2>
                                     </div>
@@ -215,7 +215,7 @@ const handleUrlCheck = () => {
                                         initial={{ width: 0 }}
                                         animate={{ width: `${result.probability * 100}%` }}
                                         transition={{ duration: 1.5, ease: "circOut" }}
-                                        style={{ background: result.label === 'Spam' ? '#ff3c50' : '#00ffaa' }}
+                                        style={{ background: result.label === 'Unsafe' ? '#ff3c50' : '#00ffaa' }}
                                     />
                                 </div>
 

@@ -129,13 +129,13 @@ textarea {
     font-size: 0.85rem;
     display: inline-block;
 
-    &.ham {
+    &.safe {
         background: rgba(0, 255, 170, 0.15);
         color: $accent-primary;
         border: 1px solid $accent-primary;
     }
 
-    &.spam {
+    &.unsafe {
         background: rgba(255, 60, 80, 0.15);
         color: $danger;
         border: 1px solid $danger;
@@ -206,6 +206,7 @@ textarea {
     align-items: center;
     gap: 1rem;
 }
+
 /* ===============================
    URL Detector (Added Feature)
    =============================== */
@@ -251,6 +252,7 @@ textarea {
 .url-result.danger {
     color: $danger;
 }
+
 .url-result.warning {
     color: #facc15; // yellow
 }

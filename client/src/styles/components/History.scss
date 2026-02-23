@@ -26,11 +26,11 @@
         transform: translateY(-5px);
     }
 
-    &.spam {
+    &.unsafe {
         border-color: $danger;
     }
 
-    &.ham {
+    &.safe {
         border-color: $accent-primary;
     }
 }

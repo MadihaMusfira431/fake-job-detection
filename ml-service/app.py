@@ -52,7 +52,7 @@ def predict():
     # Ensure score doesn't go below 0
     score = max(0, score)
     
-    label = "Ham" if score > 70 else "Spam"
+    label = "Safe" if score > 70 else "Unsafe"
     
     return jsonify({
         'label': label,
