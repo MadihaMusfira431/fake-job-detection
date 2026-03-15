@@ -77,6 +77,8 @@ const Scanner = ({ onScanComplete }) => {
         setError('')
         setResult(null)
 
+        let isMounted = true;
+
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/detect`, {
                 method: 'POST',
@@ -84,17 +86,21 @@ const Scanner = ({ onScanComplete }) => {
                 body: JSON.stringify({ text: inputText }),
             })
             const data = await response.json()
-            if (data.success) {
+            if (data.success && isMounted) {
                 setResult(data.data)
                 if (onScanComplete) onScanComplete()
-            } else {
+            } else if (isMounted) {
                 setError(data.error || 'Something went wrong')
             }
         } catch (err) {
-            setError('Connection failed. Please ensure backend and ML service are running.')
+            if (isMounted) setError('Connection failed. Please ensure backend and ML service are running.')
         } finally {
-            setTimeout(() => setLoading(false), 3000)
+            setTimeout(() => {
+                if (isMounted) setLoading(false);
+            }, 3000)
         }
+
+        return () => { isMounted = false };
     }
 
     return (
@@ -239,7 +245,7 @@ const Scanner = ({ onScanComplete }) => {
                                     transition={{ delay: 0.8 }}
                                 >
                                     <h3>Analysis Explanation</h3>
-                                    <p className="analysis-text">{result.reason}</p>
+                                    <p className="analysis-text">{result.reason || 'Deep neural analysis completed. System has flagged this content based on identified scam patterns and linguistic anomalies.'}</p>
                                 </motion.div>
                             </motion.div>
                         )}

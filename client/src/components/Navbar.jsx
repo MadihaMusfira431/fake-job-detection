@@ -25,6 +25,7 @@ const Navbar = ({ scannerId, user, onLogout, onLoginClick }) => {
 
     const navLinks = [
         { label: 'Protocol', id: 'features' },
+        { label: 'Arcade', id: 'arcade' },
         { label: 'Archive', id: 'history' }
     ]
 

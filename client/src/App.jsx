@@ -13,20 +13,29 @@ import './styles/components/CustomCursor.scss'
 
 function App() {
   const [historyKey, setHistoryKey] = useState(0)
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null)
+  const [user, setUser] = useState(() => {
+    try {
+      const savedUser = localStorage.getItem('user')
+      return savedUser ? JSON.parse(savedUser) : null
+    } catch (err) {
+      console.error('Failed to parse user from storage', err)
+      return null
+    }
+  })
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
   const [guestTimerExpired, setGuestTimerExpired] = useState(false)
   const scannerId = 'scanner-tool'
 
   useEffect(() => {
     const lenis = new Lenis()
+    let rafId
 
     function raf(time) {
       lenis.raf(time)
-      requestAnimationFrame(raf)
+      rafId = requestAnimationFrame(raf)
     }
 
-    requestAnimationFrame(raf)
+    rafId = requestAnimationFrame(raf)
 
     // Guest Timer: 5 minutes = 300,000 ms
     let timer;
@@ -38,6 +47,7 @@ function App() {
     }
 
     return () => {
+      if (rafId) cancelAnimationFrame(rafId)
       lenis.destroy()
       if (timer) clearTimeout(timer)
     }
