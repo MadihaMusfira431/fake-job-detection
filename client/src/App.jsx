@@ -5,7 +5,6 @@ import Hero from './components/Hero'
 import Features from './components/Features'
 import Scanner from './components/Scanner'
 import History from './components/History'
-import GameLink from './components/GameLink'
 import Footer from './components/Footer'
 import CustomCursor from './components/CustomCursor'
 import AuthModal from './components/AuthModal'
@@ -91,7 +90,6 @@ function App() {
 
         <Features />
         <Scanner onScanComplete={refreshHistory} />
-                <GameLink />
         <History refreshKey={historyKey} />
       </main>
 
