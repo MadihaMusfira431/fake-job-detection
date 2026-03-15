@@ -165,22 +165,35 @@ const Scanner = ({ onScanComplete }) => {
                                 initial={{ opacity: 0, scale: 0.98 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.98 }}
-                                className="terminal-loader"
+                                className="loading-experience"
                             >
-                                {logs.map((log, i) => (
-                                    <motion.span
-                                        key={i}
-                                        initial={{ opacity: 0, x: -10 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        className="terminal-line"
-                                    >
-                                        {log}
-                                    </motion.span>
-                                ))}
-                                <span className="terminal-cursor" />
-                            </motion.div>
-                        )}
+                                
+                                                        <div className="terminal-loader">
+                                    {logs.map((log, i) => (
+                                        <motion.span
+                                            key={i}
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            className="terminal-line"
+                                        >
+                                            {log}
+                                        </motion.span>
+                                    ))}
+                                    <span className="terminal-cursor" />
+                                </div>
 
+                                <div className="game-loader">
+                                    <p className="game-loader-title">Play Snake while we analyze your report</p>
+                                    <iframe
+                                        src="https://snake-game-8nzq.vercel.app/"
+                                        title="Snake mini game"
+                                        className="game-frame"
+                                        loading="lazy"
+                                        allow="fullscreen"
+                                    />
+                                </div>
+                            </motion.div>
+    )}
                         {result && !loading && (
                             <motion.div
                                 key="result"
