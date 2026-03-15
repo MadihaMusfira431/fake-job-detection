@@ -34,13 +34,14 @@ const Scanner = ({ onScanComplete }) => {
                     clearInterval(interval)
                 }
             }, 400)
+
             return () => clearInterval(interval)
         }
     }, [loading])
+
     const handleUrlCheck = () => {
         if (!url.trim()) return
 
-        // Basic URL validation
         const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/
         if (!urlPattern.test(url)) {
             setUrlResult({
@@ -52,16 +53,9 @@ const Scanner = ({ onScanComplete }) => {
 
         let riskScore = 0
 
-        // IP-based URL
         if (/https?:\/\/\d+\.\d+\.\d+\.\d+/.test(url)) riskScore++
-
-        // URL shorteners
         if (/(bit\.ly|tinyurl|t\.co|goo\.gl)/i.test(url)) riskScore++
-
-        // Phishing keywords
         if (/(login|verify|bank|free|winner|claim)/i.test(url)) riskScore++
-
-        // Too many special characters
         if ((url.match(/[@\-_%]/g) || []).length > 3) riskScore++
 
         setUrlResult(
@@ -73,6 +67,7 @@ const Scanner = ({ onScanComplete }) => {
 
     const handleDetect = async () => {
         if (!inputText.trim()) return
+
         setLoading(true)
         setError('')
         setResult(null)
@@ -83,7 +78,9 @@ const Scanner = ({ onScanComplete }) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ text: inputText }),
             })
+
             const data = await response.json()
+
             if (data.success) {
                 setResult(data.data)
                 if (onScanComplete) onScanComplete()
@@ -100,6 +97,7 @@ const Scanner = ({ onScanComplete }) => {
     return (
         <section className="scanner-section" id="scanner-tool">
             <div className="container">
+
                 <motion.div
                     className="scanner-card"
                     initial={{ opacity: 0, y: 100 }}
@@ -107,12 +105,14 @@ const Scanner = ({ onScanComplete }) => {
                     transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                     viewport={{ once: true, margin: "-10%" }}
                 >
+
                     <div className="scanner-title">
                         <Terminal size={24} className="accent-icon" />
                         Neural Analysis Portal
                     </div>
 
                     <div className="input-container">
+
                         <textarea
                             placeholder="Paste content for system verification..."
                             value={inputText}
@@ -120,7 +120,6 @@ const Scanner = ({ onScanComplete }) => {
                             disabled={loading}
                         />
 
-                        {/* URL Detector Input */}
                         <input
                             type="text"
                             className="url-input"
@@ -146,6 +145,7 @@ const Scanner = ({ onScanComplete }) => {
                                 {urlResult.message}
                             </p>
                         )}
+
                     </div>
 
                     <motion.button
@@ -159,41 +159,32 @@ const Scanner = ({ onScanComplete }) => {
                     </motion.button>
 
                     <AnimatePresence mode="wait">
+
                         {loading && (
                             <motion.div
                                 key="terminal"
                                 initial={{ opacity: 0, scale: 0.98 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.98 }}
-                                className="loading-experience"
+                                className="terminal-loader"
                             >
-                                
-                                                        <div className="terminal-loader">
-                                    {logs.map((log, i) => (
-                                        <motion.span
-                                            key={i}
-                                            initial={{ opacity: 0, x: -10 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            className="terminal-line"
-                                        >
-                                            {log}
-                                        </motion.span>
-                                    ))}
-                                    <span className="terminal-cursor" />
-                                </div>
 
-                                <div className="game-loader">
-                                    <p className="game-loader-title">Play Snake while we analyze your report</p>
-                                    <iframe
-                                        src="https://snake-game-8nzq.vercel.app/"
-                                        title="Snake mini game"
-                                        className="game-frame"
-                                        loading="lazy"
-                                        allow="fullscreen"
-                                    />
-                                </div>
+                                {logs.map((log, i) => (
+                                    <motion.span
+                                        key={i}
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        className="terminal-line"
+                                    >
+                                        {log}
+                                    </motion.span>
+                                ))}
+
+                                <span className="terminal-cursor" />
+
                             </motion.div>
-    )}
+                        )}
+
                         {result && !loading && (
                             <motion.div
                                 key="result"
@@ -202,61 +193,101 @@ const Scanner = ({ onScanComplete }) => {
                                 transition={{ type: "spring", damping: 12, stiffness: 100 }}
                                 className="results-overlay"
                             >
-                                <motion.div
-                                    className="result-header"
-                                    initial={{ y: 20, opacity: 0 }}
-                                    animate={{ y: 0, opacity: 1 }}
-                                    transition={{ delay: 0.2 }}
-                                >
+
+                                <div className="result-header">
+
                                     <div className="header-left">
                                         <span className={`status-badge ${result.label.toLowerCase()}`}>
-                                            {result.label === 'Safe' ? 'Verified: Legitimate' : 'Warning: Fraudulent'}
+                                            {result.label === 'Safe'
+                                                ? 'Verified: Legitimate'
+                                                : 'Warning: Fraudulent'}
                                         </span>
-                                        <h2 className="result-label">Result: {result.label}</h2>
+
+                                        <h2 className="result-label">
+                                            Result: {result.label}
+                                        </h2>
                                     </div>
+
                                     <div className="score-container">
                                         <div className="stat-label">Precision Matrix</div>
+
                                         <div className="score-value">
                                             {(result.probability * 100).toFixed(0)}%
                                         </div>
                                     </div>
-                                </motion.div>
+
+                                </div>
 
                                 <div className="score-meter">
+
                                     <motion.div
                                         className="score-fill"
                                         initial={{ width: 0 }}
                                         animate={{ width: `${result.probability * 100}%` }}
-                                        transition={{ duration: 1.5, ease: "circOut" }}
-                                        style={{ background: result.label === 'Unsafe' ? '#ff3c50' : '#00ffaa' }}
+                                        transition={{ duration: 1.5 }}
+                                        style={{
+                                            background: result.label === 'Unsafe'
+                                                ? '#ff3c50'
+                                                : '#00ffaa'
+                                        }}
                                     />
+
                                 </div>
 
-                                <motion.div
-                                    className="analysis-details"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: 0.8 }}
-                                >
+                                <div className="analysis-details">
+
                                     <h3>Analysis Explanation</h3>
-                                    <p className="analysis-text">{result.reason}</p>
-                                </motion.div>
+
+                                    <p className="analysis-text">
+                                        {result.reason}
+                                    </p>
+
+                                </div>
+
                             </motion.div>
                         )}
 
                         {error && !loading && (
                             <motion.div
                                 key="error"
-                                initial={{ opacity: 0, x: [-10, 10, -10, 10, 0] }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.4 }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
                                 className="error-card"
                             >
                                 <AlertTriangle /> {error}
                             </motion.div>
                         )}
+
                     </AnimatePresence>
+
                 </motion.div>
+
+                {/* Snake Game Section */}
+                <div style={{ textAlign: "center", marginTop: "70px" }}>
+
+                    <h2 style={{ color: "#00ffaa" }}>
+                        Take a Break – Play Snake 🐍
+                    </h2>
+
+                    <p style={{ color: "#aaa" }}>
+                        While checking job posts, you can try beating this score.
+                    </p>
+
+                    <iframe
+                        src="https://snake-game-8nzq.vercel.app/"
+                        title="Snake Game"
+                        width="500"
+                        height="500"
+                        style={{
+                            border: "none",
+                            borderRadius: "12px",
+                            marginTop: "20px",
+                            boxShadow: "0 0 25px rgba(0,255,170,0.3)"
+                        }}
+                    />
+
+                </div>
+
             </div>
         </section>
     )
