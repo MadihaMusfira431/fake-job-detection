@@ -30,7 +30,7 @@ app.use('/api/users', require('./routes/userRoutes'));
 // Serve frontend from local public folder
 const publicPath = path.join(__dirname, 'public');
 app.use(express.static(publicPath));
-
+//
 // ✅ SAFE fallback (NO wildcard)
 app.use((req, res) => {
     res.sendFile(path.join(publicPath, 'index.html'));
