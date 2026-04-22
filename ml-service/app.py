@@ -29,7 +29,7 @@ def preprocess_text(text):
 
 # Simple Rule-based classification for demonstration (College level)
 # In a production app, you would load a pickled Scikit-learn model here.
-SCAM_KEYWORDS = ['urgent', 'bank', 'password', 'money', 'nigeria', 'inheritance', 'win', 'prize', 'lottery', 'wire transfer', 'western union']
+SCAM_KEYWORDS = ['urgent', 'bank', 'password', 'money', 'nigeria', 'inheritance', 'win', 'prize', 'lottery', 'wire transfer', 'western union','work from home ', 'click here', 'free', 'offer', 'limited time', 'act now', 'risk free','earn money online', 'investment opportunity', 'get rich quick', 'no experience needed', 'guaranteed', 'exclusive deal']
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -46,7 +46,7 @@ def predict():
     
     for kw in SCAM_KEYWORDS:
         if kw in processed_text:
-            score -= 15
+            score -= 50
             found_keywords.append(kw)
     
     # Ensure score doesn't go below 0
