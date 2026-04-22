@@ -37,7 +37,7 @@ const GameLink = () => {
               </div>
             </div>
             <a 
-              href="https://snake-game-8nzq.vercel.app/" 
+              href="https://macos-desktop-react.vercel.app/" 
               target="_blank" 
               rel="noopener noreferrer"
               className="btn-outline"
@@ -48,7 +48,7 @@ const GameLink = () => {
           <div className="game-display">
             <div className="iframe-container">
               <iframe
-                src="https://snake-game-8nzq.vercel.app/"
+                src="https://macos-desktop-react.vercel.app/"
                 title="Secure Stream Simulation"
                 className="arcade-iframe"
                 loading="lazy"
